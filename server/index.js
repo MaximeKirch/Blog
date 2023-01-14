@@ -1,30 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser')
-const router = express.Router();
-const {MongoClient} = require('mongodb')
+const client = require('./Database/Connect');
+
 const app = express();
 
 require('dotenv').config()
-
-
-// DB Connection 
-    const username = process.env.DB_USERNAME
-    const password = process.env.DB_PASSWORD
-    const clusterUrl = process.env.CLUSTER_URL
-
-    const uri = `mongodb+srv://${username}:${password}@${clusterUrl}`
-
-    const client = new MongoClient(uri);
-
-    async function run() {
-        try {
-            await client.connect().then(console.log('DB Connected')).catch((e) => console.log(e))
-        } finally {
-            await client.close()
-        }
-    }
-
-    run().catch(console.dir)
 
 // Parse application/x-www-form-urlencoded
     app.use(bodyParser.urlencoded({ extended: false}))
