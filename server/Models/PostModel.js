@@ -9,6 +9,9 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  picture : {
+    type: String
+  },
   authorName: {
     type: String,
     required: true,
@@ -17,9 +20,19 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  likes: {
-    type: Number,
-    default: 0,
+  likers: {
+    type: [String],
+    required : true,
+  },
+  comments : {
+    type: [
+      {
+        commenterId : String, 
+        commenterPseudo : String, 
+        text: String, 
+        timestamp : Number
+      },
+    ]
   },
   crDate: {
     type: Date,
@@ -31,6 +44,4 @@ const PostSchema = new mongoose.Schema({
   },
 });
 
-const Post = mongoose.model("Post", PostSchema);
-
-module.exports = { Post };
+module.exports = mongoose.model('posts', PostSchema)

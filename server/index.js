@@ -1,26 +1,33 @@
 const express = require('express');
-const bodyParser = require('body-parser')
-const client = require('./Database/Connect');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const postRoutes = require('./Routes/Posts.routes.js');
+const usersRoutes = require('./Routes/User.routes.js')
+const cors = require('cors');
+const {checkUser, requireAuth} = require('./Middlewares/Auth.middleware.js')
+
+require('dotenv').config()
+require('./Config/db')
 
 const app = express();
 
-require('dotenv').config()
-
-// Parse application/x-www-form-urlencoded
-    app.use(bodyParser.urlencoded({ extended: false}))
-
-// Parse application/json
+const corsOptions = {
+    origin:process.env.CLIENT_URL,
+    credentials : true,
+    'allowHeaders' : ['sessionId', 'Content-Type'],
+    'exposeHeaders' : ['sessionId'] ,
+    'methods' : 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    'preflightContinue' : false
+}
+    app.use(cors(corsOptions));
+    app.use(bodyParser.urlencoded({ extended: true}))
     app.use(bodyParser.json())
+    app.use(cookieParser);
 
 // Routes
-    const posts = require('./Routes/Posts')
-    const auth = require('./Routes/Auth');
-    const users = require('./Routes/User');
-
-
-    app.use('/posts', posts);
-    app.use('/user', users);
-    app.use('/auth', auth);
+    app.use('/api/posts', postRoutes);
+    app.use('/api/users', usersRoutes);
+    app.use('/api/auth', auth);
 
 
 // Server PORT 
