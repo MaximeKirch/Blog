@@ -29,6 +29,12 @@ const corsOptions = {
     app.use('/api/users', usersRoutes);
     app.use('/api/auth', auth);
 
+// JWT 
+    app.get('*', checkUser)
+    app.get('/jwtid', requireAuth, (req,res) => {
+        res.status(200).send(res.locals.user._id)
+    })
+
 
 // Server PORT 
 

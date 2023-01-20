@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 require('./.env')
+
 // DB Connection 
 const username = process.env.DB_USERNAME
 const password = process.env.DB_PASSWORD
